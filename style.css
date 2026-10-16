@@ -147,47 +147,59 @@ a:hover
 }
 .autoblur
 {
-    animation: autobluranimation linear both;
-    animation-timeline: view();
+    opacity: 1;
+    filter: none;
+    transform: none;
 }
-@keyframes autobluranimation
+@supports (animation-timeline: view())
 {
-    0%
+    .autoblur
     {
-        filter: blur(40px);
+        animation: autobluranimation linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 40%;
     }
-    40%,60%
+    @keyframes autobluranimation
     {
-        filter: blur(0);
-        transform: translateY(0);
-        opacity: 1;
-        
-    }
-    100%
-    {
-        filter: blur(40px);
-        transform: translateY(-200px);
-        opacity: 0;
+        0%
+        {
+            filter: blur(15px);
+            opacity: 0.3;
+            transform: translateY(20px);
+        }
+        100%
+        {
+            filter: blur(0);
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 }
 .about_section
 {
+    position: relative;
     display: flex;
     width: 100%;
     color: white;
     flex-direction: column;
-    flex-wrap: wrap;
-    margin-top: 300px;
+    margin-top: 200px;
+    padding: 40px 0;
+    overflow: hidden;
 }
 .skil
 {
+    position: relative;
+    z-index: 2;
     display: flex;
-    width: auto;
-    height: 900px;
-    padding: 15px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    gap: 30px;
+    min-height: 480px;
 }
 .about_section h2
 {
@@ -205,14 +217,20 @@ a:hover
 {
     padding: 20px;
     width: 250px;
-    height: 200px;
+    min-height: 190px;
     text-align: center;
-    flex-basis: 30%;
-    box-shadow: 0px 0px 15px rgba(245, 245, 245, 0.350);
-    border: none;
+    flex: 0 1 250px;
+    background: rgba(14, 14, 14, 0.75);
+    box-shadow: 0px 0px 15px rgba(245, 245, 245, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .detail1 button a 
 {
@@ -222,35 +240,12 @@ a:hover
     border: none;
     margin-left: 10px;
 }
-.skill1:hover
+.skill1:hover,.skill2:hover,.skill3:hover,.skill4:hover,.skill5:hover,.skill6:hover
 {
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
-}
-.skill2:hover
-{
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
-}
-.skill3:hover
-{
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
-}
-.skill4:hover
-{
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
-}
-.skill5:hover
-{
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
-}
-.skill6:hover
-{
-    box-shadow: 0px 0px 15px rgb(245, 245, 245);
-    opacity: 0.7 !important;
+    box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.7), 0px 0px 15px rgba(255, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-8px) scale(1.05);
+    opacity: 1 !important;
 }
 .about_section img
 {
@@ -380,18 +375,22 @@ a:hover
 .eyes_background
 {
     position: absolute;
-    z-index: -1;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    width: 100%;
-    height: 100%;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 .eyes_background img 
 {
-    width: 500px;
+    width: 480px;
+    max-width: 90vw;
     height: auto;
     animation: spin 2.5s linear infinite reverse;
+    opacity: 0.85;
 }
 .eyes_background img::before
 {
@@ -506,7 +505,7 @@ a:hover
     }
     .eyes_background
     {
-        transform: scale(0.55);
+        transform: translate(-50%, -50%) scale(0.6);
     }
     .skil img 
     {

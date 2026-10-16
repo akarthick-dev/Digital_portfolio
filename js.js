@@ -38,9 +38,7 @@ function close_navbar()
     side_navbar.style.left = "-60%"
 }
 console.log("Screen Width:", window.screen.width);
-console.log("Screen Height:", window.screen.height);
-const skill = document.querySelector(".skil")
-console.log(skill)
-skill.forEach(element => {
+const skills = document.querySelectorAll(".skil > div")
+skills.forEach(element => {
     console.log(element)
 })
