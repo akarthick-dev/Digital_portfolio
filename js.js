@@ -37,8 +37,55 @@ function close_navbar()
 {
     side_navbar.style.left = "-60%"
 }
-console.log("Screen Width:", window.screen.width);
 const skills = document.querySelectorAll(".skil > div")
 skills.forEach(element => {
     console.log(element)
 })
+
+// Autoblur scroll effect fallback for browsers without CSS animation-timeline (Zen Browser, Firefox, Safari)
+if (!CSS.supports || !CSS.supports("animation-timeline", "view()")) {
+    const blurCards = document.querySelectorAll(".autoblur");
+    function updateBlurEffect() {
+        const windowHeight = window.innerHeight;
+        blurCards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const totalDistance = windowHeight + rect.height;
+            const currentDistance = windowHeight - rect.top;
+            const progress = currentDistance / totalDistance;
+
+            if (progress <= 0) {
+                card.style.filter = "blur(40px)";
+                card.style.opacity = "0";
+                card.style.transform = "translateY(0)";
+            } else if (progress < 0.40) {
+                const t = progress / 0.40;
+                card.style.filter = `blur(${(40 * (1 - t)).toFixed(1)}px)`;
+                card.style.opacity = t.toFixed(2);
+                card.style.transform = "translateY(0)";
+            } else if (progress <= 0.60) {
+                card.style.filter = "blur(0px)";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            } else if (progress <= 1.0) {
+                const t = (progress - 0.60) / 0.40;
+                card.style.filter = `blur(${(40 * t).toFixed(1)}px)`;
+                card.style.opacity = (1 - t).toFixed(2);
+                card.style.transform = `translateY(${(-200 * t).toFixed(1)}px)`;
+            } else {
+                card.style.filter = "blur(40px)";
+                card.style.opacity = "0";
+                card.style.transform = "translateY(-200px)";
+            }
+        });
+    }
+
+    window.addEventListener("scroll", () => {
+        window.requestAnimationFrame(updateBlurEffect);
+    }, { passive: true });
+
+    window.addEventListener("resize", () => {
+        window.requestAnimationFrame(updateBlurEffect);
+    }, { passive: true });
+
+    updateBlurEffect();
+}
